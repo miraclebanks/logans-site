@@ -78,65 +78,67 @@ export default function PayPalCheckout({ amount, planName, onSuccess, onError }:
     <div className="max-w-2xl mx-auto">
       <div className="grid md:grid-cols-2 gap-8">
         {/* Order Summary */}
-        <Card>
+        <Card className="bg-white dark:bg-[#171f36] border-gray-200 dark:border-[#3b5069]">
           <CardHeader>
-            <CardTitle className="flex items-center justify-between">
+            <CardTitle className="flex items-center justify-between text-gray-900 dark:text-white">
               Order Summary
               <Badge variant="secondary">Monthly</Badge>
             </CardTitle>
-            <CardDescription>Review your purchase details</CardDescription>
+            <CardDescription className="text-gray-600 dark:text-gray-300">Review your purchase details</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
-            <div className="flex justify-between items-center py-2 border-b">
-              <span className="font-medium">{planName}</span>
-              <span className="font-bold">${amount}/month</span>
+            <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-[#3b5069]">
+              <span className="font-medium text-gray-900 dark:text-white">{planName}</span>
+              <span className="font-bold text-gray-900 dark:text-white">${amount}/month</span>
             </div>
 
             <div className="space-y-2">
-              <div className="flex items-center text-sm text-gray-600">
-                <Check className="w-4 h-4 text-green-500 mr-2" />
+              <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                <Check className="w-4 h-4 text-green-500 dark:text-green-400 mr-2" />
                 30-day wellness guarantee
               </div>
-              <div className="flex items-center text-sm text-gray-600">
-                <Check className="w-4 h-4 text-green-500 mr-2" />
+              <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                <Check className="w-4 h-4 text-green-500 dark:text-green-400 mr-2" />
                 Cancel anytime, no commitment
               </div>
-              <div className="flex items-center text-sm text-gray-600">
-                <Check className="w-4 h-4 text-green-500 mr-2" />
+              <div className="flex items-center text-sm text-gray-600 dark:text-gray-300">
+                <Check className="w-4 h-4 text-green-500 dark:text-green-400 mr-2" />
                 Instant access to wellness tools
               </div>
             </div>
 
-            <div className="pt-4 border-t">
+            <div className="pt-4 border-t border-gray-200 dark:border-[#3b5069]">
               <div className="flex justify-between items-center font-bold text-lg">
-                <span>Total Today</span>
-                <span>${amount}</span>
+                <span className="text-gray-900 dark:text-white">Total Today</span>
+                <span className="text-gray-900 dark:text-white">${amount}</span>
               </div>
-              <p className="text-sm text-gray-600 mt-1">Billed monthly. Cancel anytime.</p>
+              <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">Billed monthly. Cancel anytime.</p>
             </div>
           </CardContent>
         </Card>
 
         {/* PayPal Checkout */}
-        <Card>
+        <Card className="bg-white dark:bg-[#171f36] border-gray-200 dark:border-[#3b5069]">
           <CardHeader>
-            <CardTitle>Payment Method</CardTitle>
-            <CardDescription>Secure payment powered by PayPal</CardDescription>
+            <CardTitle className="text-gray-900 dark:text-white">Payment Method</CardTitle>
+            <CardDescription className="text-gray-600 dark:text-gray-300">
+              Secure payment powered by PayPal
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+              <div className="p-4 bg-blue-50 dark:bg-[#3b5069] rounded-lg border border-blue-200 dark:border-[#6c7685]">
                 <div className="flex items-center space-x-2 mb-2">
-                  <div className="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
-                    <Check className="w-4 h-4 text-white" />
+                  <div className="w-6 h-6 bg-blue-500 dark:bg-[#bacbd8] rounded-full flex items-center justify-center">
+                    <Check className="w-4 h-4 text-white dark:text-[#171f36]" />
                   </div>
-                  <span className="font-medium text-blue-900">Secure Payment</span>
+                  <span className="font-medium text-blue-900 dark:text-white">Secure Payment</span>
                 </div>
-                <p className="text-sm text-blue-700">
+                <p className="text-sm text-blue-700 dark:text-gray-300">
                   Your wellness journey starts with secure payment. All personal health information is HIPAA-compliant
                   and encrypted.
                 </p>
-                <p className="text-sm text-blue-700 mt-2">
+                <p className="text-sm text-blue-700 dark:text-gray-300 mt-2">
                   Need help? Call us at{" "}
                   <a href="tel:562-283-5727" className="font-medium underline">
                     (562) 283-5727
@@ -147,12 +149,12 @@ export default function PayPalCheckout({ amount, planName, onSuccess, onError }:
               {/* PayPal Button Container */}
               <div ref={paypalRef} className="min-h-[200px] flex items-center justify-center">
                 <div className="text-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 mx-auto mb-2"></div>
-                  <p className="text-gray-600">Loading PayPal...</p>
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 dark:border-[#bacbd8] mx-auto mb-2"></div>
+                  <p className="text-gray-600 dark:text-gray-300">Loading PayPal...</p>
                 </div>
               </div>
 
-              <div className="text-center text-sm text-gray-500">
+              <div className="text-center text-sm text-gray-500 dark:text-gray-400">
                 <p>By completing your purchase, you agree to our Terms of Service and Privacy Policy.</p>
               </div>
             </div>
