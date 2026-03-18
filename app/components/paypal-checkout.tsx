@@ -1,14 +1,16 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 import { Check } from "lucide-react"
 
 interface PayPalCheckoutProps {
   amount: number
   planName: string
-  onSuccess: (details: any) => void
+  onSuccess: (details: { orderId: string; customerName: string; customerEmail: string }) => void
   onError: (error: any) => void
 }
 
@@ -20,59 +22,99 @@ declare global {
 
 export default function PayPalCheckout({ amount, planName, onSuccess, onError }: PayPalCheckoutProps) {
   const paypalRef = useRef<HTMLDivElement>(null)
+  const buttonsRendered = useRef(false)
+  const [customerName, setCustomerName] = useState("")
+  const [customerEmail, setCustomerEmail] = useState("")
+  const [formReady, setFormReady] = useState(false)
+  const [sdkReady, setSdkReady] = useState(false)
 
+  const customerNameRef = useRef(customerName)
+  const customerEmailRef = useRef(customerEmail)
+  customerNameRef.current = customerName
+  customerEmailRef.current = customerEmail
+
+  // Validate form fields
   useEffect(() => {
-    // Load PayPal SDK
+    const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail)
+    setFormReady(customerName.trim().length >= 2 && emailValid)
+  }, [customerName, customerEmail])
+
+  // Load PayPal SDK once
+  useEffect(() => {
+    const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID || "test"
+
+    if (document.querySelector(`script[data-paypal-sdk]`)) {
+      if (window.paypal) setSdkReady(true)
+      return
+    }
+
     const script = document.createElement("script")
-    script.src = "https://www.paypal.com/sdk/js?client-id=test&currency=USD"
+    script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}&currency=USD`
+    script.dataset.paypalSdk = "true"
     script.async = true
 
-    script.onload = () => {
-      if (window.paypal && paypalRef.current) {
-        window.paypal
-          .Buttons({
-            createOrder: (data: any, actions: any) => {
-              return actions.order.create({
-                purchase_units: [
-                  {
-                    amount: {
-                      value: amount.toString(),
-                    },
-                    description: `${planName} - Monthly Wellness Subscription`,
-                  },
-                ],
-              })
-            },
-            onApprove: async (data: any, actions: any) => {
-              try {
-                const details = await actions.order.capture()
-                onSuccess(details)
-              } catch (error) {
-                onError(error)
-              }
-            },
-            onError: (error: any) => {
-              onError(error)
-            },
-            style: {
-              layout: "vertical",
-              color: "blue",
-              shape: "rect",
-              label: "paypal",
-            },
-          })
-          .render(paypalRef.current)
-      }
-    }
+    script.onload = () => setSdkReady(true)
+    script.onerror = () => onError(new Error("Failed to load PayPal SDK"))
 
     document.head.appendChild(script)
+  }, [onError])
 
-    return () => {
-      if (document.head.contains(script)) {
-        document.head.removeChild(script)
-      }
+  // Render PayPal buttons once SDK is ready and form is valid
+  useEffect(() => {
+    if (!sdkReady || !formReady || !paypalRef.current || buttonsRendered.current) return
+
+    buttonsRendered.current = true
+
+    window.paypal
+      .Buttons({
+        createOrder: async () => {
+          const res = await fetch("/api/paypal/create-order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ amount, planName }),
+          })
+          const data = await res.json()
+          if (!res.ok) throw new Error(data.error || "Failed to create order")
+          return data.id
+        },
+        onApprove: async (data: { orderID: string }) => {
+          const res = await fetch("/api/paypal/capture-order", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              orderID: data.orderID,
+              customerEmail: customerEmailRef.current,
+              customerName: customerNameRef.current,
+              planName,
+              amount,
+            }),
+          })
+          const details = await res.json()
+          if (!res.ok) throw new Error(details.error || "Failed to capture order")
+          onSuccess({
+            orderId: details.orderId,
+            customerName: customerNameRef.current,
+            customerEmail: customerEmailRef.current,
+          })
+        },
+        onError: (err: any) => onError(err),
+        style: {
+          layout: "vertical",
+          color: "blue",
+          shape: "rect",
+          label: "pay",
+        },
+      })
+      .render(paypalRef.current)
+  }, [sdkReady, formReady, amount, planName, onSuccess, onError])
+
+  // Reset buttons if form becomes invalid again
+  useEffect(() => {
+    if (!formReady && buttonsRendered.current && paypalRef.current) {
+      paypalRef.current.innerHTML = ""
+      buttonsRendered.current = false
     }
-  }, [amount, planName, onSuccess, onError])
+  }, [formReady])
 
   return (
     <div className="max-w-2xl mx-auto">
@@ -98,16 +140,20 @@ export default function PayPalCheckout({ amount, planName, onSuccess, onError }:
 
             <div className="space-y-2">
               <div className="flex items-center text-sm text-gray-600 dark:text-gray-300 theme-transition">
-                <Check className="w-4 h-4 text-green-500 dark:text-green-400 mr-2 icon-transition" />
+                <Check className="w-4 h-4 text-green-500 dark:text-green-400 mr-2 flex-shrink-0" />
                 30-day wellness guarantee
               </div>
               <div className="flex items-center text-sm text-gray-600 dark:text-gray-300 theme-transition">
-                <Check className="w-4 h-4 text-green-500 dark:text-green-400 mr-2 icon-transition" />
+                <Check className="w-4 h-4 text-green-500 dark:text-green-400 mr-2 flex-shrink-0" />
                 Cancel anytime, no commitment
               </div>
               <div className="flex items-center text-sm text-gray-600 dark:text-gray-300 theme-transition">
-                <Check className="w-4 h-4 text-green-500 dark:text-green-400 mr-2 icon-transition" />
+                <Check className="w-4 h-4 text-green-500 dark:text-green-400 mr-2 flex-shrink-0" />
                 Instant access to wellness tools
+              </div>
+              <div className="flex items-center text-sm text-gray-600 dark:text-gray-300 theme-transition">
+                <Check className="w-4 h-4 text-green-500 dark:text-green-400 mr-2 flex-shrink-0" />
+                Confirmation email sent immediately
               </div>
             </div>
 
@@ -133,35 +179,68 @@ export default function PayPalCheckout({ amount, planName, onSuccess, onError }:
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
-              <div className="p-4 bg-blue-50 dark:bg-[#3b5069] rounded-lg border border-blue-200 dark:border-[#6c7685] theme-transition">
-                <div className="flex items-center space-x-2 mb-2">
-                  <div className="w-6 h-6 bg-blue-500 dark:bg-[#bacbd8] rounded-full flex items-center justify-center theme-transition">
-                    <Check className="w-4 h-4 text-white dark:text-[#171f36] icon-transition" />
-                  </div>
-                  <span className="font-medium text-blue-900 dark:text-white theme-transition">Secure Payment</span>
+              {/* Customer Info Fields */}
+              <div className="space-y-3">
+                <div>
+                  <Label htmlFor="customerName" className="text-gray-700 dark:text-gray-300 theme-transition">
+                    Full Name
+                  </Label>
+                  <Input
+                    id="customerName"
+                    type="text"
+                    placeholder="Jane Smith"
+                    value={customerName}
+                    onChange={(e) => setCustomerName(e.target.value)}
+                    className="mt-1 bg-white dark:bg-[#3b5069] border-gray-300 dark:border-[#6c7685] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 theme-transition"
+                  />
                 </div>
+                <div>
+                  <Label htmlFor="customerEmail" className="text-gray-700 dark:text-gray-300 theme-transition">
+                    Email Address{" "}
+                    <span className="text-gray-400 dark:text-gray-500 font-normal text-xs">(for confirmation)</span>
+                  </Label>
+                  <Input
+                    id="customerEmail"
+                    type="email"
+                    placeholder="jane@example.com"
+                    value={customerEmail}
+                    onChange={(e) => setCustomerEmail(e.target.value)}
+                    className="mt-1 bg-white dark:bg-[#3b5069] border-gray-300 dark:border-[#6c7685] text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 theme-transition"
+                  />
+                </div>
+              </div>
+
+              <div className="p-3 bg-blue-50 dark:bg-[#3b5069] rounded-lg border border-blue-200 dark:border-[#6c7685] theme-transition">
                 <p className="text-sm text-blue-700 dark:text-gray-300 theme-transition">
-                  Your wellness journey starts with secure payment. All personal health information is HIPAA-compliant
-                  and encrypted.
-                </p>
-                <p className="text-sm text-blue-700 dark:text-gray-300 mt-2 theme-transition">
-                  Need help? Call us at{" "}
-                  <a href="tel:562-283-5727" className="font-medium underline hover:opacity-80 theme-transition">
+                  <span className="font-medium">HIPAA-compliant & encrypted.</span> Your health information is fully
+                  protected. Need help?{" "}
+                  <a href="tel:562-283-5727" className="font-medium underline hover:opacity-80">
                     (562) 283-5727
                   </a>
                 </p>
               </div>
 
-              {/* PayPal Button Container */}
-              <div ref={paypalRef} className="min-h-[200px] flex items-center justify-center">
-                <div className="text-center">
-                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500 dark:border-[#bacbd8] mx-auto mb-2 theme-transition"></div>
-                  <p className="text-gray-600 dark:text-gray-300 theme-transition">Loading PayPal...</p>
-                </div>
+              {/* PayPal Button or prompt */}
+              <div className="min-h-[80px]">
+                {!formReady ? (
+                  <div className="flex items-center justify-center h-20 rounded-lg border-2 border-dashed border-gray-200 dark:border-[#3b5069] theme-transition">
+                    <p className="text-sm text-gray-400 dark:text-gray-500 text-center theme-transition">
+                      Enter your name and email above to continue
+                    </p>
+                  </div>
+                ) : (
+                  <div ref={paypalRef}>
+                    {!sdkReady && (
+                      <div className="flex items-center justify-center h-20">
+                        <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-500 dark:border-[#bacbd8]" />
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
 
-              <div className="text-center text-sm text-gray-500 dark:text-gray-400 theme-transition">
-                <p>By completing your purchase, you agree to our Terms of Service and Privacy Policy.</p>
+              <div className="text-center text-xs text-gray-400 dark:text-gray-500 theme-transition">
+                By completing your purchase, you agree to our Terms of Service and Privacy Policy.
               </div>
             </div>
           </CardContent>

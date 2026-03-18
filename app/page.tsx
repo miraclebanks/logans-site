@@ -67,6 +67,7 @@ const productTiers = [
 export default function EcommercePage() {
   const [selectedTier, setSelectedTier] = useState(productTiers[1])
   const [showCheckout, setShowCheckout] = useState(false)
+  const [orderSuccess, setOrderSuccess] = useState<{ orderId: string; customerName: string; customerEmail: string; planName: string; amount: number } | null>(null)
   const [darkMode, setDarkMode] = useState(false)
   const [isThemeChanging, setIsThemeChanging] = useState(false)
 
@@ -109,6 +110,60 @@ export default function EcommercePage() {
     setShowCheckout(true)
   }
 
+  // Success screen
+  if (orderSuccess) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-[#171f36] py-12 px-4 theme-transition">
+        <div className="max-w-lg mx-auto text-center">
+          <div className="bg-white dark:bg-[#1e2d42] rounded-2xl shadow-xl p-10 card-transition">
+            <div className="w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Check className="w-10 h-10 text-green-600 dark:text-green-400" />
+            </div>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3 theme-transition">
+              Welcome to EasyMind!
+            </h1>
+            <p className="text-gray-600 dark:text-gray-300 mb-6 theme-transition">
+              Your <strong>{orderSuccess.planName}</strong> subscription is now active.
+            </p>
+
+            <div className="bg-gray-50 dark:bg-[#171f36] rounded-xl p-5 text-left space-y-3 mb-6 theme-transition">
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-500 dark:text-gray-400">Plan</span>
+                <span className="font-semibold text-gray-900 dark:text-white">{orderSuccess.planName}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-500 dark:text-gray-400">Amount</span>
+                <span className="font-semibold text-gray-900 dark:text-white">${orderSuccess.amount}/month</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-500 dark:text-gray-400">Order ID</span>
+                <span className="font-mono text-xs text-gray-700 dark:text-gray-300">{orderSuccess.orderId}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-500 dark:text-gray-400">Confirmation sent to</span>
+                <span className="text-gray-700 dark:text-gray-300">{orderSuccess.customerEmail}</span>
+              </div>
+            </div>
+
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-6 theme-transition">
+              A confirmation email has been sent to <strong>{orderSuccess.customerEmail}</strong>. Check your inbox!
+            </p>
+
+            <Button
+              onClick={() => {
+                setOrderSuccess(null)
+                setShowCheckout(false)
+              }}
+              className="bg-gradient-to-r from-[#3b5069] to-[#171f36] text-white hover:opacity-90 theme-transition"
+            >
+              Return to Home
+            </Button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   if (showCheckout) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-[#171f36] py-12 px-4 theme-transition">
@@ -121,19 +176,24 @@ export default function EcommercePage() {
               Complete Your Purchase
             </h1>
             <p className="text-gray-600 dark:text-gray-300 theme-transition">
-              You're purchasing: {selectedTier.name} - ${selectedTier.price}/month
+              You're purchasing: {selectedTier.name} — ${selectedTier.price}/month
             </p>
           </div>
           <PayPalCheckout
             amount={selectedTier.price}
             planName={selectedTier.name}
-            onSuccess={() => {
-              alert("Payment successful! Welcome to " + selectedTier.name)
+            onSuccess={(details) => {
+              setOrderSuccess({
+                orderId: details.orderId,
+                customerName: details.customerName,
+                customerEmail: details.customerEmail,
+                planName: selectedTier.name,
+                amount: selectedTier.price,
+              })
               setShowCheckout(false)
             }}
             onError={(error) => {
               console.error("Payment error:", error)
-              alert("Payment failed. Please try again.")
             }}
           />
         </div>
