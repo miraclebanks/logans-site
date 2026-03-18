@@ -158,7 +158,7 @@ export default function EasyMindPage() {
             <p className="text-lg text-white/90 mb-8 leading-relaxed">
               Personalized therapy and wellness support designed for your unique needs. Let&apos;s take the first step together.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3">
+            <div className="flex flex-col sm:flex-row gap-3 items-center justify-center lg:justify-start">
               <Button
                 size="lg"
                 onClick={() => scrollTo("get-started")}
@@ -170,7 +170,7 @@ export default function EasyMindPage() {
                 size="lg"
                 variant="outline"
                 onClick={() => scrollTo("about")}
-                className="border-white/60 text-white hover:bg-white/10 rounded-full text-lg"
+                className="border-2 border-white text-white bg-white/10 hover:bg-white/20 rounded-full text-lg"
               >
                 Learn More
               </Button>
@@ -182,7 +182,7 @@ export default function EasyMindPage() {
           </div>
         </div>
 
-        <div className={`flex items-center justify-center p-8 gradient-transition ${darkMode ? "hero-image-gradient-dark" : "hero-image-gradient-light"}`}>
+        <div className={`hidden lg:flex items-center justify-center p-8 gradient-transition ${darkMode ? "hero-image-gradient-dark" : "hero-image-gradient-light"}`}>
           <img
             src="/easy-mind-logo.png"
             alt="EasyMind Wellness"
