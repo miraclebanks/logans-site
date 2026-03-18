@@ -47,7 +47,7 @@
     "geist": "latest",
     "input-otp": "latest",
     "lucide-react": "^0.454.0",
-    "next": "15.2.4",
+    "next": "^15.5.13",
     "next-themes": "latest",
     "nodemailer": "^8.0.3",
     "react": "^19",
