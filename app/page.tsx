@@ -2,12 +2,73 @@
 
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { ChevronDown, Menu, Award, Phone, Mail, X } from "lucide-react"
+import { ChevronDown, Menu, Award, Phone, Mail, X, Check, Shield, Zap, Crown } from "lucide-react"
 import ThemeToggle from "./components/theme-toggle"
+import PayPalCheckout from "./components/paypal-checkout"
+
+const productTiers = [
+  {
+    id: "basic",
+    name: "Individual Session",
+    price: 29,
+    priceLabel: "per session",
+    description: "A single wellness session to get started",
+    icon: Shield,
+    features: [
+      "60-minute 1-on-1 session",
+      "Meditation & breathing guidance",
+      "Mood and wellness check-in",
+      "Personalized recommendations",
+      "Email follow-up summary",
+    ],
+    popular: false,
+    color: "from-[#6c7685] to-[#3b5069]",
+  },
+  {
+    id: "pro",
+    name: "Wellness Package",
+    price: 79,
+    priceLabel: "per package",
+    description: "4 sessions for focused, ongoing support",
+    icon: Zap,
+    features: [
+      "4 x 60-minute sessions",
+      "Advanced mood analytics",
+      "1-on-1 coaching",
+      "Personalized wellness plan",
+      "Premium resource library",
+      "Community access",
+      "Progress tracking",
+    ],
+    popular: true,
+    color: "from-[#6c7c92] to-[#171f36]",
+  },
+  {
+    id: "enterprise",
+    name: "Complete Care",
+    price: 199,
+    priceLabel: "per package",
+    description: "Comprehensive support with full-spectrum care",
+    icon: Crown,
+    features: [
+      "8 x 60-minute sessions",
+      "Weekly therapy check-ins",
+      "24/7 crisis support line",
+      "Family wellness sessions",
+      "Custom wellness content",
+      "Dedicated wellness coach",
+      "Priority scheduling",
+      "Full progress report",
+    ],
+    popular: false,
+    color: "from-[#3b5069] to-[#171f36]",
+  },
+]
 
 const scrollTo = (id: string) => {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
@@ -18,6 +79,9 @@ export default function EasyMindPage() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [formState, setFormState] = useState({ name: "", email: "", phone: "", message: "" })
   const [formStatus, setFormStatus] = useState<"idle" | "sending" | "success" | "error">("idle")
+  const [selectedTier, setSelectedTier] = useState(productTiers[1])
+  const [showCheckout, setShowCheckout] = useState(false)
+  const [orderSuccess, setOrderSuccess] = useState<{ orderId: string; customerName: string; customerEmail: string; planName: string; amount: number } | null>(null)
 
   useEffect(() => {
     const savedTheme = localStorage.getItem("theme")
@@ -60,8 +124,81 @@ export default function EasyMindPage() {
   const navLinks = [
     { label: "About", id: "about" },
     { label: "Helpful Information", id: "helpful-information" },
+    { label: "Plans", id: "pricing" },
     { label: "Get Started", id: "get-started" },
   ]
+
+  if (orderSuccess) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-[#171f36] py-12 px-4 theme-transition">
+        <div className="max-w-lg mx-auto text-center">
+          <div className="bg-white dark:bg-[#1e2d42] rounded-2xl shadow-xl p-10 card-transition">
+            <div className="w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Check className="w-10 h-10 text-green-600 dark:text-green-400" />
+            </div>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-3 theme-transition">Welcome to EasyMind!</h1>
+            <p className="text-gray-600 dark:text-gray-300 mb-6 theme-transition">
+              Your <strong>{orderSuccess.planName}</strong> subscription is now active.
+            </p>
+            <div className="bg-gray-50 dark:bg-[#171f36] rounded-xl p-5 text-left space-y-3 mb-6 theme-transition">
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-500 dark:text-gray-400">Plan</span>
+                <span className="font-semibold text-gray-900 dark:text-white">{orderSuccess.planName}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-500 dark:text-gray-400">Amount</span>
+                <span className="font-semibold text-gray-900 dark:text-white">${orderSuccess.amount}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-500 dark:text-gray-400">Order ID</span>
+                <span className="font-mono text-xs text-gray-700 dark:text-gray-300">{orderSuccess.orderId}</span>
+              </div>
+              <div className="flex justify-between text-sm">
+                <span className="text-gray-500 dark:text-gray-400">Confirmation sent to</span>
+                <span className="text-gray-700 dark:text-gray-300">{orderSuccess.customerEmail}</span>
+              </div>
+            </div>
+            <p className="text-sm text-gray-500 dark:text-gray-400 mb-6 theme-transition">
+              A confirmation email has been sent to <strong>{orderSuccess.customerEmail}</strong>.
+            </p>
+            <Button
+              onClick={() => { setOrderSuccess(null); setShowCheckout(false) }}
+              className="bg-gradient-to-r from-[#3b5069] to-[#171f36] text-white hover:opacity-90"
+            >
+              Return to Home
+            </Button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (showCheckout) {
+    return (
+      <div className="min-h-screen bg-gray-50 dark:bg-[#171f36] py-12 px-4 theme-transition">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-8">
+            <Button variant="outline" onClick={() => setShowCheckout(false)} className="mb-4 theme-transition">
+              ← Back to Plans
+            </Button>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-2 theme-transition">Complete Your Purchase</h1>
+            <p className="text-gray-600 dark:text-gray-300 theme-transition">
+              You're purchasing: {selectedTier.name} — ${selectedTier.price}/month
+            </p>
+          </div>
+          <PayPalCheckout
+            amount={selectedTier.price}
+            planName={selectedTier.name}
+            onSuccess={(details) => {
+              setOrderSuccess({ ...details, planName: selectedTier.name, amount: selectedTier.price })
+              setShowCheckout(false)
+            }}
+            onError={(error) => console.error("Payment error:", error)}
+          />
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="min-h-screen bg-white dark:bg-[#171f36] theme-transition">
@@ -344,6 +481,75 @@ export default function EasyMindPage() {
               </button>
               .
             </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ── PRICING ── */}
+      <section id="pricing" className="py-20 px-4 bg-white dark:bg-[#171f36] theme-transition">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-900 dark:text-white mb-4 theme-transition">Choose Your Wellness Plan</h2>
+            <div className="w-16 h-1 bg-gradient-to-r from-[#3b5069] to-[#6c7c92] mx-auto rounded-full mb-4" />
+            <p className="text-xl text-gray-600 dark:text-gray-300 theme-transition">Find the perfect plan for your mental health journey</p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+            {productTiers.map((tier) => {
+              const IconComponent = tier.icon
+              return (
+                <Card
+                  key={tier.id}
+                  className={`relative card-transition hover:shadow-2xl ${
+                    tier.popular ? "ring-2 ring-[#3b5069] dark:ring-[#bacbd8] scale-105" : "hover:scale-105"
+                  } ${selectedTier.id === tier.id ? "ring-2 ring-[#6c7c92] dark:ring-[#cbd8e2]" : ""} bg-white dark:bg-[#1e2d42] border-gray-200 dark:border-[#3b5069] hover:-translate-y-1`}
+                >
+                  {tier.popular && (
+                    <Badge className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-[#6c7c92] to-[#3b5069] text-white">
+                      Most Popular
+                    </Badge>
+                  )}
+                  <div className="p-6 text-center pb-4">
+                    <div className={`w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-r ${tier.color} flex items-center justify-center`}>
+                      <IconComponent className="w-8 h-8 text-white" />
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-1 theme-transition">{tier.name}</h3>
+                    <CardDescription className="text-gray-600 dark:text-gray-300 mb-4 theme-transition">{tier.description}</CardDescription>
+                    <div>
+                      <span className="text-4xl font-bold text-gray-900 dark:text-white theme-transition">${tier.price}</span>
+                      <span className="text-gray-600 dark:text-gray-300 theme-transition"> {tier.priceLabel}</span>
+                    </div>
+                  </div>
+                  <CardContent className="pt-0">
+                    <ul className="space-y-3 mb-6">
+                      {tier.features.map((feature, i) => (
+                        <li key={i} className="flex items-center">
+                          <Check className="w-5 h-5 text-green-500 dark:text-green-400 mr-3 flex-shrink-0" />
+                          <span className="text-gray-700 dark:text-gray-300 text-sm theme-transition">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                    <div className="space-y-2">
+                      <Button
+                        onClick={() => { setSelectedTier(tier); setShowCheckout(false) }}
+                        variant={selectedTier.id === tier.id ? "default" : "outline"}
+                        className="w-full theme-transition"
+                      >
+                        {selectedTier.id === tier.id ? "Selected" : "Select Plan"}
+                      </Button>
+                      {selectedTier.id === tier.id && (
+                        <Button
+                          onClick={() => setShowCheckout(true)}
+                          className={`w-full bg-gradient-to-r ${tier.color} text-white hover:opacity-90 theme-transition`}
+                        >
+                          Get Started Now
+                        </Button>
+                      )}
+                    </div>
+                  </CardContent>
+                </Card>
+              )
+            })}
           </div>
         </div>
       </section>

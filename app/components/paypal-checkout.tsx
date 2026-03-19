@@ -125,7 +125,7 @@ export default function PayPalCheckout({ amount, planName, onSuccess, onError }:
             <CardTitle className="flex items-center justify-between text-gray-900 dark:text-white theme-transition">
               Order Summary
               <Badge variant="secondary" className="theme-transition">
-                Monthly
+                One-time
               </Badge>
             </CardTitle>
             <CardDescription className="text-gray-600 dark:text-gray-300 theme-transition">
@@ -135,21 +135,21 @@ export default function PayPalCheckout({ amount, planName, onSuccess, onError }:
           <CardContent className="space-y-4">
             <div className="flex justify-between items-center py-2 border-b border-gray-200 dark:border-[#3b5069] theme-transition">
               <span className="font-medium text-gray-900 dark:text-white theme-transition">{planName}</span>
-              <span className="font-bold text-gray-900 dark:text-white theme-transition">${amount}/month</span>
+              <span className="font-bold text-gray-900 dark:text-white theme-transition">${amount}</span>
             </div>
 
             <div className="space-y-2">
               <div className="flex items-center text-sm text-gray-600 dark:text-gray-300 theme-transition">
                 <Check className="w-4 h-4 text-green-500 dark:text-green-400 mr-2 flex-shrink-0" />
-                30-day wellness guarantee
+                One-time payment, no recurring charges
               </div>
               <div className="flex items-center text-sm text-gray-600 dark:text-gray-300 theme-transition">
                 <Check className="w-4 h-4 text-green-500 dark:text-green-400 mr-2 flex-shrink-0" />
-                Cancel anytime, no commitment
+                30-day satisfaction guarantee
               </div>
               <div className="flex items-center text-sm text-gray-600 dark:text-gray-300 theme-transition">
                 <Check className="w-4 h-4 text-green-500 dark:text-green-400 mr-2 flex-shrink-0" />
-                Instant access to wellness tools
+                Sessions scheduled after purchase
               </div>
               <div className="flex items-center text-sm text-gray-600 dark:text-gray-300 theme-transition">
                 <Check className="w-4 h-4 text-green-500 dark:text-green-400 mr-2 flex-shrink-0" />
@@ -163,7 +163,7 @@ export default function PayPalCheckout({ amount, planName, onSuccess, onError }:
                 <span className="text-gray-900 dark:text-white theme-transition">${amount}</span>
               </div>
               <p className="text-sm text-gray-600 dark:text-gray-300 mt-1 theme-transition">
-                Billed monthly. Cancel anytime.
+                One-time payment. No subscriptions.
               </p>
             </div>
           </CardContent>
