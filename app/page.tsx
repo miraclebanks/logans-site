@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
 import { ChevronDown, Menu, Award, Phone, Mail, X } from "lucide-react"
 import ThemeToggle from "./components/theme-toggle"
+import { PHONE_DISPLAY, PHONE_HREF, EMAIL, EMAIL_HREF } from "@/lib/constants"
 
 const scrollTo = (id: string) => {
   document.getElementById(id)?.scrollIntoView({ behavior: "smooth" })
@@ -70,8 +71,8 @@ export default function EasyMindPage() {
       <div className="text-center py-3 px-4 bg-gradient-to-r from-[#3b5069] to-[#171f36]">
         <p className="text-sm font-medium text-white">
           📞 Call{" "}
-          <a href="tel:5622835727" className="underline font-semibold hover:opacity-80">
-            (562) 283-5727
+          <a href={PHONE_HREF} className="underline font-semibold hover:opacity-80">
+            {PHONE_DISPLAY}
           </a>{" "}
           for a free 15-minute consultation
         </p>
@@ -113,10 +114,10 @@ export default function EasyMindPage() {
             {/* Right */}
             <div className="flex items-center space-x-4">
               <a
-                href="tel:562-283-5727"
+                href={PHONE_HREF}
                 className="hidden md:block text-[#3b5069] dark:text-[#bacbd8] font-medium text-sm hover:opacity-80 theme-transition"
               >
-                📞 (562) 283-5727
+                📞 {PHONE_DISPLAY}
               </a>
               <ThemeToggle darkMode={darkMode} onToggle={toggleDarkMode} />
             </div>
@@ -177,7 +178,7 @@ export default function EasyMindPage() {
             </div>
             <p className="text-sm text-white/70 mt-4">
               Free 15-minute consultation •{" "}
-              <a href="tel:5622835727" className="underline hover:opacity-80">(562) 283-5727</a>
+              <a href={PHONE_HREF} className="underline hover:opacity-80">{PHONE_DISPLAY}</a>
             </p>
           </div>
         </div>
@@ -335,8 +336,8 @@ export default function EasyMindPage() {
           <div className="text-center mt-10">
             <p className="text-gray-600 dark:text-gray-300 theme-transition">
               Have questions? Call us at{" "}
-              <a href="tel:5622835727" className="text-[#3b5069] dark:text-[#bacbd8] font-semibold hover:underline">
-                (562) 283-5727
+              <a href={PHONE_HREF} className="text-[#3b5069] dark:text-[#bacbd8] font-semibold hover:underline">
+                {PHONE_DISPLAY}
               </a>
               {" "}or{" "}
               <button onClick={() => scrollTo("get-started")} className="text-[#3b5069] dark:text-[#bacbd8] font-semibold hover:underline">
@@ -367,26 +368,26 @@ export default function EasyMindPage() {
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-4 theme-transition">Contact Directly</h3>
                 <div className="space-y-4">
                   <a
-                    href="tel:5622835727"
+                    href={PHONE_HREF}
                     className="flex items-center gap-3 p-4 rounded-xl bg-gray-50 dark:bg-[#1e2d42] border border-gray-200 dark:border-[#3b5069] hover:border-[#3b5069] dark:hover:border-[#bacbd8] transition-colors theme-transition group"
                   >
                     <div className="w-10 h-10 bg-gradient-to-r from-[#3b5069] to-[#171f36] rounded-full flex items-center justify-center flex-shrink-0">
                       <Phone className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900 dark:text-white theme-transition">(562) 283-5727</p>
+                      <p className="font-semibold text-gray-900 dark:text-white theme-transition">{PHONE_DISPLAY}</p>
                       <p className="text-sm text-gray-500 dark:text-gray-400 theme-transition">Free 15-min consultation available</p>
                     </div>
                   </a>
                   <a
-                    href="mailto:logan@easymind-wellness.com"
+                    href={EMAIL_HREF}
                     className="flex items-center gap-3 p-4 rounded-xl bg-gray-50 dark:bg-[#1e2d42] border border-gray-200 dark:border-[#3b5069] hover:border-[#3b5069] dark:hover:border-[#bacbd8] transition-colors theme-transition"
                   >
                     <div className="w-10 h-10 bg-gradient-to-r from-[#3b5069] to-[#171f36] rounded-full flex items-center justify-center flex-shrink-0">
                       <Mail className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900 dark:text-white theme-transition">logan@easymind-wellness.com</p>
+                      <p className="font-semibold text-gray-900 dark:text-white theme-transition">{EMAIL}</p>
                       <p className="text-sm text-gray-500 dark:text-gray-400 theme-transition">We respond within 24 hours</p>
                     </div>
                   </a>
@@ -513,11 +514,11 @@ export default function EasyMindPage() {
                 <span className="text-xs text-gray-300">City of Long Beach Grant Recipient</span>
               </div>
               <div className="space-y-2">
-                <a href="tel:562-283-5727" className="flex items-center gap-2 text-[#bacbd8] hover:text-[#cbd8e2] font-medium text-sm">
-                  📞 (562) 283-5727
+                <a href={PHONE_HREF} className="flex items-center gap-2 text-[#bacbd8] hover:text-[#cbd8e2] font-medium text-sm">
+                  📞 {PHONE_DISPLAY}
                 </a>
-                <a href="mailto:logan@easymind-wellness.com" className="flex items-center gap-2 text-[#bacbd8] hover:text-[#cbd8e2] font-medium text-sm">
-                  ✉️ logan@easymind-wellness.com
+                <a href={EMAIL_HREF} className="flex items-center gap-2 text-[#bacbd8] hover:text-[#cbd8e2] font-medium text-sm">
+                  ✉️ {EMAIL}
                 </a>
               </div>
             </div>
@@ -544,8 +545,8 @@ export default function EasyMindPage() {
               <h4 className="font-semibold mb-4">Get Started</h4>
               <ul className="space-y-2 text-gray-400 text-sm">
                 <li><button onClick={() => scrollTo("get-started")} className="hover:text-white">Contact Logan</button></li>
-                <li><a href="tel:5622835727" className="hover:text-white">Free Consultation</a></li>
-                <li><a href="mailto:logan@easymind-wellness.com" className="hover:text-white">Email Us</a></li>
+                <li><a href={PHONE_HREF} className="hover:text-white">Free Consultation</a></li>
+                <li><a href={EMAIL_HREF} className="hover:text-white">Email Us</a></li>
               </ul>
             </div>
           </div>
