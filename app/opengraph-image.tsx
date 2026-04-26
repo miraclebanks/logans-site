@@ -1,15 +1,14 @@
 import { ImageResponse } from "next/og"
-import { readFileSync } from "fs"
-import path from "path"
 
-export const runtime = "nodejs"
+export const runtime = "edge"
 export const alt = "EasyMind Wellness"
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 
-export default function Image() {
-  const logoBuffer = readFileSync(path.join(process.cwd(), "public/easy-mind-logo.png"))
-  const logoBase64 = `data:image/png;base64,${logoBuffer.toString("base64")}`
+export default async function Image() {
+  const host = process.env.VERCEL_URL ?? "localhost:3000"
+  const protocol = host.includes("localhost") ? "http" : "https"
+  const logoUrl = `${protocol}://${host}/easy-mind-logo.png`
 
   return new ImageResponse(
     (
@@ -61,17 +60,15 @@ export default function Image() {
             textAlign: "center",
           }}
         >
-          {/* Logo */}
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src={logoBase64}
+            src={logoUrl}
             width={160}
             height={160}
             style={{ borderRadius: "50%" }}
             alt="EasyMind logo"
           />
 
-          {/* Brand name */}
           <div
             style={{
               display: "flex",
@@ -104,7 +101,6 @@ export default function Image() {
             </span>
           </div>
 
-          {/* Tagline */}
           <span
             style={{
               fontSize: 26,
