@@ -4,18 +4,19 @@ import { GeistMono } from 'geist/font/mono'
 import './globals.css'
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://logans-website.vercel.app'),
   title: 'EasyMind Wellness | Mental Health Therapist Matching',
-  description: 'Connect with a therapist who truly fits your needs. EasyMind Wellness offers personalized mental health provider matching to help you begin your wellness journey today.',
+  description: 'Connect with a therapist who truly fits your needs. EasyMind Wellness provides personalized mental health matching to start your wellness journey.',
   openGraph: {
     title: 'EasyMind Wellness | Mental Health Therapist Matching',
-    description: 'Connect with a therapist who truly fits your needs. EasyMind Wellness offers personalized mental health provider matching to help you begin your wellness journey today.',
+    description: 'Connect with a therapist who truly fits your needs. EasyMind Wellness provides personalized mental health matching to start your wellness journey.',
     siteName: 'EasyMind Wellness',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
     title: 'EasyMind Wellness | Mental Health Therapist Matching',
-    description: 'Connect with a therapist who truly fits your needs. EasyMind Wellness offers personalized mental health provider matching to help you begin your wellness journey today.',
+    description: 'Connect with a therapist who truly fits your needs. EasyMind Wellness provides personalized mental health matching to start your wellness journey.',
   },
 }
 
