@@ -1,15 +1,11 @@
 import { ImageResponse } from "next/og"
 
 export const runtime = "edge"
-export const alt = "EasyMind Wellness"
+export const alt = "EasyMind Wellness - Find Your Perfect Mental Health Provider"
 export const size = { width: 1200, height: 630 }
 export const contentType = "image/png"
 
 export default async function Image() {
-  const host = process.env.VERCEL_URL ?? "localhost:3000"
-  const protocol = host.includes("localhost") ? "http" : "https"
-  const logoUrl = `${protocol}://${host}/easy-mind-logo.png`
-
   return new ImageResponse(
     (
       <div
@@ -55,31 +51,23 @@ export default async function Image() {
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
-            gap: 32,
+            gap: 28,
             padding: "0 80px",
             textAlign: "center",
           }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={logoUrl}
-            width={160}
-            height={160}
-            style={{ borderRadius: "50%" }}
-            alt="EasyMind logo"
-          />
-
+          {/* Brand name */}
           <div
             style={{
               display: "flex",
               flexDirection: "column",
               alignItems: "center",
-              gap: 16,
+              gap: 8,
             }}
           >
             <span
               style={{
-                fontSize: 72,
+                fontSize: 80,
                 fontWeight: 800,
                 color: "#ffffff",
                 letterSpacing: "-2px",
@@ -90,10 +78,10 @@ export default async function Image() {
             </span>
             <span
               style={{
-                fontSize: 28,
+                fontSize: 32,
                 fontWeight: 500,
                 color: "#f9a8b8",
-                letterSpacing: "2px",
+                letterSpacing: "4px",
                 textTransform: "uppercase",
               }}
             >
@@ -101,17 +89,36 @@ export default async function Image() {
             </span>
           </div>
 
+          {/* Headline */}
           <span
             style={{
-              fontSize: 26,
+              fontSize: 30,
               fontWeight: 400,
-              color: "#94a3b8",
-              maxWidth: 700,
+              color: "#cbd5e1",
+              maxWidth: 760,
               lineHeight: 1.5,
             }}
           >
-            Find your perfect mental health provider match
+            Find your perfect mental health provider — personalized matching for your unique needs
           </span>
+
+          {/* CTA */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "#f9a8b8",
+              color: "#171f36",
+              fontSize: 22,
+              fontWeight: 700,
+              padding: "14px 40px",
+              borderRadius: 50,
+              letterSpacing: "0.5px",
+            }}
+          >
+            Start Your Journey Today
+          </div>
         </div>
       </div>
     ),

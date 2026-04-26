@@ -4,18 +4,18 @@ import { GeistMono } from 'geist/font/mono'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'EasyMind Wellness',
-  description: 'Find your perfect mental health provider match. Personalized therapist matching with EasyMind Wellness.',
+  title: 'EasyMind Wellness | Mental Health Therapist Matching',
+  description: 'Connect with a therapist who truly fits your needs. EasyMind Wellness offers personalized mental health provider matching to help you begin your wellness journey today.',
   openGraph: {
-    title: 'EasyMind Wellness',
-    description: 'Find your perfect mental health provider match.',
+    title: 'EasyMind Wellness | Mental Health Therapist Matching',
+    description: 'Connect with a therapist who truly fits your needs. EasyMind Wellness offers personalized mental health provider matching to help you begin your wellness journey today.',
     siteName: 'EasyMind Wellness',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'EasyMind Wellness',
-    description: 'Find your perfect mental health provider match.',
+    title: 'EasyMind Wellness | Mental Health Therapist Matching',
+    description: 'Connect with a therapist who truly fits your needs. EasyMind Wellness offers personalized mental health provider matching to help you begin your wellness journey today.',
   },
 }
 
