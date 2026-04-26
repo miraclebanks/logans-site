@@ -4,9 +4,19 @@ import { GeistMono } from 'geist/font/mono'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'v0 App',
-  description: 'Created with v0',
-  generator: 'v0.dev',
+  title: 'EasyMind Wellness',
+  description: 'Find your perfect mental health provider match. Personalized therapist matching with EasyMind Wellness.',
+  openGraph: {
+    title: 'EasyMind Wellness',
+    description: 'Find your perfect mental health provider match.',
+    siteName: 'EasyMind Wellness',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'EasyMind Wellness',
+    description: 'Find your perfect mental health provider match.',
+  },
 }
 
 export default function RootLayout({
