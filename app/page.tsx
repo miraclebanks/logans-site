@@ -339,7 +339,7 @@ export default function EasyMindPage() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <div>
-                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3 theme-transition">About Logan</h3>
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3 theme-transition">About Us</h3>
                 <p className="text-gray-600 dark:text-gray-300 leading-relaxed theme-transition">
                   Logan is a licensed mental health professional dedicated to providing compassionate, evidence-based care.
                   With a deep commitment to accessible wellness, Logan founded EasyMind to make quality mental health
@@ -731,7 +731,7 @@ export default function EasyMindPage() {
             <div>
               <h4 className="font-semibold mb-4">About</h4>
               <ul className="space-y-2 text-gray-400 text-sm">
-                <li><button onClick={() => scrollTo("about")} className="hover:text-white">About Logan</button></li>
+                <li><button onClick={() => scrollTo("about")} className="hover:text-white">About Us</button></li>
                 <li><button onClick={() => scrollTo("about")} className="hover:text-white">About EasyMind</button></li>
                 <li><button onClick={() => scrollTo("about")} className="hover:text-white">Our Mission</button></li>
               </ul>
@@ -749,7 +749,7 @@ export default function EasyMindPage() {
             <div>
               <h4 className="font-semibold mb-4">Get Started</h4>
               <ul className="space-y-2 text-gray-400 text-sm">
-                <li><button onClick={() => scrollTo("get-started")} className="hover:text-white">Contact Logan</button></li>
+                <li><button onClick={() => scrollTo("get-started")} className="hover:text-white">Contact Us</button></li>
                 <li><a href="tel:5622835727" className="hover:text-white">Free Consultation</a></li>
                 <li><a href="mailto:logan@easymind-wellness.com" className="hover:text-white">Email Us</a></li>
               </ul>
