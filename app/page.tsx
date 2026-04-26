@@ -720,7 +720,7 @@ export default function EasyMindPage() {
               </div>
               <div className="space-y-2">
                 <a href="tel:562-283-5727" className="flex items-center gap-2 text-[#bacbd8] hover:text-[#cbd8e2] font-medium text-sm">
-                  📞 (562) 283-5727
+                  📞 Call Now
                 </a>
                 <a href="mailto:logan@easymind-wellness.com" className="flex items-center gap-2 text-[#bacbd8] hover:text-[#cbd8e2] font-medium text-sm">
                   ✉️ logan@easymind-wellness.com
