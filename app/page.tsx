@@ -24,6 +24,7 @@ const productTiers = [
       "3 curated provider matches",
       "Provider profiles & bios",
       "Specialty & approach filtering",
+      "Insurance compatibility filtering",
       "Email support",
     ],
     popular: false,
@@ -41,7 +42,6 @@ const productTiers = [
       "Up to 10 provider matches",
       "Insurance compatibility filtering",
       "30-min phone consultation",
-      "Provider comparison tool",
       "Scheduling assistance",
       "30-day match support",
     ],
@@ -206,9 +206,9 @@ export default function EasyMindPage() {
       {/* Top Banner */}
       <div className="text-center py-3 px-4 bg-gradient-to-r from-[#3b5069] to-[#171f36]">
         <p className="text-sm font-medium text-white">
-          📞 Call{" "}
+          📞{" "}
           <a href="tel:5622835727" className="underline font-semibold hover:opacity-80">
-            (562) 283-5727
+            Call Now
           </a>{" "}
           for a free 15-minute consultation
         </p>
@@ -253,7 +253,7 @@ export default function EasyMindPage() {
                 href="tel:562-283-5727"
                 className="hidden md:block text-[#3b5069] dark:text-[#bacbd8] font-medium text-sm hover:opacity-80 theme-transition"
               >
-                📞 (562) 283-5727
+                📞 Call Now
               </a>
               <ThemeToggle darkMode={darkMode} onToggle={toggleDarkMode} />
             </div>
@@ -314,7 +314,7 @@ export default function EasyMindPage() {
             </div>
             <p className="text-sm text-white/70 mt-4">
               Free 15-minute consultation •{" "}
-              <a href="tel:5622835727" className="underline hover:opacity-80">(562) 283-5727</a>
+              <a href="tel:5622835727" className="underline hover:opacity-80">Call Now</a>
             </p>
           </div>
         </div>
@@ -471,9 +471,9 @@ export default function EasyMindPage() {
 
           <div className="text-center mt-10">
             <p className="text-gray-600 dark:text-gray-300 theme-transition">
-              Have questions? Call us at{" "}
+              Have questions?{" "}
               <a href="tel:5622835727" className="text-[#3b5069] dark:text-[#bacbd8] font-semibold hover:underline">
-                (562) 283-5727
+                Call Now
               </a>
               {" "}or{" "}
               <button onClick={() => scrollTo("get-started")} className="text-[#3b5069] dark:text-[#bacbd8] font-semibold hover:underline">
@@ -580,7 +580,7 @@ export default function EasyMindPage() {
                       <Phone className="w-5 h-5 text-white" />
                     </div>
                     <div>
-                      <p className="font-semibold text-gray-900 dark:text-white theme-transition">(562) 283-5727</p>
+                      <p className="font-semibold text-gray-900 dark:text-white theme-transition">Call Now</p>
                       <p className="text-sm text-gray-500 dark:text-gray-400 theme-transition">Free 15-min consultation available</p>
                     </div>
                   </a>
