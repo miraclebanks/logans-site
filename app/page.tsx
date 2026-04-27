@@ -500,7 +500,8 @@ export default function EasyMindPage() {
               return (
                 <Card
                   key={tier.id}
-                  className={`relative card-transition hover:shadow-2xl ${
+                  onClick={() => { setSelectedTier(tier); setShowCheckout(false) }}
+                  className={`relative card-transition hover:shadow-2xl cursor-pointer ${
                     tier.popular ? "ring-2 ring-[#3b5069] dark:ring-[#bacbd8] scale-105" : "hover:scale-105"
                   } ${selectedTier.id === tier.id ? "ring-2 ring-[#6c7c92] dark:ring-[#cbd8e2]" : ""} bg-white dark:bg-[#1e2d42] border-gray-200 dark:border-[#3b5069] hover:-translate-y-1`}
                 >
