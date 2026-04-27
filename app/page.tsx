@@ -756,8 +756,18 @@ export default function EasyMindPage() {
             </div>
           </div>
 
-          <div className="border-t border-[#3b5069] pt-8 text-center text-gray-400 text-sm">
+          <div className="border-t border-[#3b5069] pt-8 text-center text-gray-400 text-sm space-y-2">
             <p>© 2024 EasyMind Wellness. All rights reserved.</p>
+            <p>
+              <a
+                href="https://www.linkedin.com/in/miraclebanks"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-white transition-colors"
+              >
+                Powered by Miracles♥
+              </a>
+            </p>
           </div>
         </div>
       </footer>
