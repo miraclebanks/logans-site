@@ -88,16 +88,6 @@ export async function sendOrderConfirmation(data: OrderConfirmationData) {
                       </td>
                     </tr>
                     <tr>
-                      <td style="padding:16px 20px;border-bottom:1px solid #e2e8f0;">
-                        <table width="100%" cellpadding="0" cellspacing="0">
-                          <tr>
-                            <td style="color:#3b5069;font-size:14px;">Billing</td>
-                            <td align="right" style="color:#171f36;font-size:14px;">Monthly</td>
-                          </tr>
-                        </table>
-                      </td>
-                    </tr>
-                    <tr>
                       <td style="padding:16px 20px;">
                         <table width="100%" cellpadding="0" cellspacing="0">
                           <tr>
@@ -131,13 +121,7 @@ export async function sendOrderConfirmation(data: OrderConfirmationData) {
                     <tr>
                       <td style="padding:8px 0;">
                         <span style="color:#3b5069;font-size:18px;">✓</span>
-                        <span style="color:#3b5069;font-size:14px;margin-left:10px;">Cancel anytime — no long-term commitment</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="padding:8px 0;">
-                        <span style="color:#3b5069;font-size:18px;">✓</span>
-                        <span style="color:#3b5069;font-size:14px;margin-left:10px;">Subscription renews automatically each month</span>
+                        <span style="color:#3b5069;font-size:14px;margin-left:10px;">No recurring charges — one-time payment</span>
                       </td>
                     </tr>
                   </table>
@@ -178,7 +162,7 @@ export async function sendOrderConfirmation(data: OrderConfirmationData) {
     <h2>New Subscription Purchase</h2>
     <p><strong>Customer:</strong> ${customerName} (${customerEmail})</p>
     <p><strong>Plan:</strong> ${planName}</p>
-    <p><strong>Amount:</strong> $${amount.toFixed(2)}/month</p>
+    <p><strong>Amount:</strong> $${amount.toFixed(2)}</p>
     <p><strong>Order ID:</strong> ${orderId}</p>
     <p><strong>Date:</strong> ${new Date().toLocaleString()}</p>
   `
