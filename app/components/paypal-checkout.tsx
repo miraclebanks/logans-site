@@ -33,6 +33,11 @@ export default function PayPalCheckout({ amount, planName, onSuccess, onError }:
   customerNameRef.current = customerName
   customerEmailRef.current = customerEmail
 
+  const onSuccessRef = useRef(onSuccess)
+  const onErrorRef = useRef(onError)
+  onSuccessRef.current = onSuccess
+  onErrorRef.current = onError
+
   // Validate form fields
   useEffect(() => {
     const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(customerEmail)
@@ -54,7 +59,7 @@ export default function PayPalCheckout({ amount, planName, onSuccess, onError }:
     script.async = true
 
     script.onload = () => setSdkReady(true)
-    script.onerror = () => onError(new Error("Failed to load PayPal SDK"))
+    script.onerror = () => onErrorRef.current(new Error("Failed to load PayPal SDK"))
 
     document.head.appendChild(script)
   }, [onError])
@@ -91,13 +96,13 @@ export default function PayPalCheckout({ amount, planName, onSuccess, onError }:
           })
           const details = await res.json()
           if (!res.ok) throw new Error(details.error || "Failed to capture order")
-          onSuccess({
+          onSuccessRef.current({
             orderId: details.orderId,
             customerName: customerNameRef.current,
             customerEmail: customerEmailRef.current,
           })
         },
-        onError: (err: any) => onError(err),
+        onError: (err: any) => onErrorRef.current(err),
         style: {
           layout: "vertical",
           color: "blue",
@@ -106,7 +111,7 @@ export default function PayPalCheckout({ amount, planName, onSuccess, onError }:
         },
       })
       .render(paypalRef.current)
-  }, [sdkReady, formReady, amount, planName, onSuccess, onError])
+  }, [sdkReady, formReady, amount, planName])
 
   // Reset buttons if form becomes invalid again
   useEffect(() => {
