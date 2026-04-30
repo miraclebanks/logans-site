@@ -341,7 +341,7 @@ export default function EasyMindPage() {
               <div>
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-3 theme-transition">About Us</h3>
                 <p className="text-gray-600 dark:text-gray-300 leading-relaxed theme-transition">
-                  Logan is a licensed mental health professional dedicated to providing compassionate, evidence-based care.
+                  Logan is an associate licensed mental health professional dedicated to providing compassionate, evidence-based care.
                   With a deep commitment to accessible wellness, Logan founded EasyMind to make quality mental health
                   support available to everyone in the Long Beach community and beyond.
                 </p>

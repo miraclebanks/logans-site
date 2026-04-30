@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
       html: `
         <p>Hi ${name},</p>
         <p>Thanks for reaching out to EasyMind Wellness! Logan will be in touch shortly.</p>
-        <p>In the meantime, feel free to call us at <strong>(562) 283-5727</strong>.</p>
+        <p>We look forward to helping you on your journey to better mental health.</p>
         <br/>
         <p>— The EasyMind Wellness Team</p>
       `,
