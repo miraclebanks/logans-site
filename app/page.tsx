@@ -540,7 +540,7 @@ export default function EasyMindPage() {
                       </Button>
                       {selectedTier.id === tier.id && (
                         <Button
-                          onClick={() => setShowCheckout(true)}
+                          onClick={(e) => { e.stopPropagation(); setShowCheckout(true) }}
                           className={`w-full bg-gradient-to-r ${tier.color} text-white hover:opacity-90 theme-transition`}
                         >
                           Get Started Now
